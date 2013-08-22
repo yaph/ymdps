@@ -36,6 +36,10 @@ if image
     images.push image
 
 
+# video
+video = meta_property 'video'
+
+
 # Add all body images that have a source set and a minimum size.
 body_images = document.querySelectorAll 'img:not([src=""])'
 for i in body_images
@@ -52,14 +56,30 @@ for p in document.getElementsByTagName 'p'
 
 # Create markdown summary compatible with jekyll and logya.
 headers = []
-md_header = '---\nCONTENT\n---\n\n'
 headers.push markdown_property 'title', title
-headers.push markdown_property 'description', description
 headers.push markdown_property 'url', url
 headers.push markdown_property 'link', link
+
+if description
+    headers.push markdown_property 'description', description
+
 if images.length > 0
     headers.push markdown_property 'image', images[0]
 
+if video
+    headers.push markdown_property 'video', video
+
+# use current date and time for created header
+now = new Date()
+headers.push markdown_property 'created', now.toISOString()
+
+md_header = """
+---
+CONTENT
+template: page.html
+---
+
+"""
 
 html = """
 <div id="markdownsummary" style="position:relative;padding:10px;border:5px solid #eee;width:80%;margin-left:10%;">
@@ -67,6 +87,7 @@ html = """
 <textarea style="width:98%;height:600px;margin:1%;">MARKDOWN</textarea>
 </div>
 """
+
 markdown = md_header.replace('CONTENT', headers.join('\n')) + paragraphs.join('\n\n')
 html = html.replace('MARKDOWN', markdown)
 
