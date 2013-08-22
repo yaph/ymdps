@@ -1,4 +1,5 @@
-# Extract basic information from a web page and summarize in markdown.
+# Extract basic information from a web page and summarize in markdown for use
+# in static site generators.
 # Open graph information has the highest priority.
 
 
@@ -54,7 +55,7 @@ for p in document.getElementsByTagName 'p'
         paragraphs.push p.textContent.trim()
 
 
-# Create markdown summary compatible with jekyll and logya.
+# Create markdown summary compatible with logya.
 headers = []
 headers.push markdown_property 'title', title
 headers.push markdown_property 'url', url
