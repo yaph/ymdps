@@ -22,7 +22,7 @@ title = document.title unless title
 
 
 # url and link
-url = title.toLowerCase().replace(/\W+/g, '-')
+url = '/' + title.toLowerCase().replace(/\W+/g, '-') + '/'
 link = document.location.href
 
 
@@ -74,7 +74,7 @@ if video
 now = new Date()
 headers.push markdown_property 'created', now.toISOString()
 
-md_header = """
+yaml_header = """
 ---
 CONTENT
 template: page.html
@@ -82,17 +82,22 @@ template: page.html
 
 """
 
-html = """
-<div id="markdownsummary" style="position:relative;padding:10px;border:5px solid #eee;width:80%;margin-left:10%;">
-<button style="position:absolute;top:5px;right:5px;cursor:pointer;font-weight:bold;" onclick="javascript:document.getElementById('markdownsummary').remove();">Close preview</button>
-<textarea style="width:98%;height:600px;margin:1%;">MARKDOWN</textarea>
-</div>
-"""
+markdown = yaml_header.replace('CONTENT', headers.join('\n')) + paragraphs.join('\n\n')
 
-markdown = md_header.replace('CONTENT', headers.join('\n')) + paragraphs.join('\n\n')
-html = html.replace('MARKDOWN', markdown)
+ymdps = document.createElement 'div'
+ymdps.id = 'ymdps'
+ymdps.setAttribute 'style', 'position:relative;padding:20px;border:5px solid #eee;width:80%;margin-left:10%;'
 
-div = document.createElement('div')
-div.innerHTML = html
+button = document.createElement 'button'
+button.setAttribute 'style', 'position:absolute;top:5px;right:5px;cursor:pointer;font-weight:bold;'
+button.setAttribute 'onclick', "javascript:document.getElementById('ymdps').remove();"
+button.textContent = 'Close preview'
 
-document.body.insertBefore div, document.body.firstChild
+textarea = document.createElement 'textarea'
+textarea.setAttribute 'style', 'width:98%;height:600px;margin:1%;'
+textarea.textContent = markdown
+
+ymdps.appendChild button
+ymdps.appendChild textarea
+
+document.body.insertBefore ymdps, document.body.firstChild
