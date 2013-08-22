@@ -101,3 +101,4 @@ ymdps.appendChild button
 ymdps.appendChild textarea
 
 document.body.insertBefore ymdps, document.body.firstChild
+window.scroll 0, 0
